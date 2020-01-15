@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CasopisFinal implements JavaDelegate {
@@ -25,28 +26,24 @@ public class CasopisFinal implements JavaDelegate {
 
         System.out.println("USAO U CASOPIS FINAL");
 
-        Long issn = (Long) execution.getVariable("issn");
+        Long stari_issn = (Long) execution.getVariable("stari_issn");
 
-        Casopis casopis = casopisRepo.findOneByIssn(issn);
+        System.out.println("stari issn u finalu" + stari_issn);
+
+        Casopis casopis = casopisRepo.findOneByIssn(stari_issn);
+
+        System.out.println(casopis.getId());
+        System.out.println(casopis.getIssn());
+
+        Long novi_issn = (Long) execution.getVariable("issn");
 
         casopis.setAktivan(true);
-        ArrayList<Korisnik> recenzenti = new ArrayList<>();
-        ArrayList<Korisnik> urednici = new ArrayList<>();
+        casopis.setIssn(novi_issn);
+        casopis.setIme((String)execution.getVariable("ime"));
 
-        String rec1 = (String) execution.getVariable("recenzent1");
-        String rec2 = (String) execution.getVariable("recenzent2");
-        String ured1 = (String) execution.getVariable("urednik1");
-        String ured2 = (String) execution.getVariable("urednik2");
 
-        Korisnik recen1 = korisnikRepo.findOneByUsername(rec1);
-        Korisnik recen2 = korisnikRepo.findOneByUsername(rec2);
-        Korisnik urednik1 = korisnikRepo.findOneByUsername(ured1);
-        Korisnik urednik2 = korisnikRepo.findOneByUsername(ured2);
-
-        recenzenti.add(recen1);
-        recenzenti.add(recen2);
-        urednici.add(urednik1);
-        urednici.add(urednik2);
+        List<Korisnik> urednici = (ArrayList)execution.getVariable("urednici");
+        List<Korisnik> recenzenti =(ArrayList) execution.getVariable("recenzenti");
 
         casopis.setRecenzenti(recenzenti);
         casopis.setUrednici(urednici);

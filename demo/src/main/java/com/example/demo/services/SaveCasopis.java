@@ -82,6 +82,10 @@ public class SaveCasopis implements JavaDelegate {
 
         casopisRepo.save(c);
 
+        System.out.println("stari issn: " + issn);
+
+        execution.setVariable("stari_issn", issn);
+
 
 
 

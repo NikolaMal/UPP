@@ -54,7 +54,7 @@ public class saveUser implements JavaDelegate {
         String drzava = (String) execution.getVariable("drzava");
         String titula = (String) execution.getVariable("titula");
         String username = (String) execution.getVariable("username");
-        ArrayList<NaucnaOblast> oblasti = (ArrayList) execution.getVariable("oblasti");
+        ArrayList<NaucnaOblast> oblasti = (ArrayList) execution.getVariable("odobrena_recenzentura");
 
         Boolean recenzent = (Boolean) execution.getVariable("recenzent");
 

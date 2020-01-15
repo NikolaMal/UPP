@@ -35,11 +35,11 @@ public class AddCasopisController {
     @PreAuthorize("hasAuthority('SET_UREDNIK_TASK')")
     public @ResponseBody FormFieldsDTO start() {
 
-        System.out.println("USAO U START PROCESS DODAVANJE CASOPISA");
 
         ProcessInstance instance = runtimeService.startProcessInstanceByKey("dodavanje_casopisa");
 
-        System.out.println("ID je " + instance.getId());
+
+
 
         Task task = taskService.createTaskQuery().processInstanceId(instance.getId()).list().get(0);
 

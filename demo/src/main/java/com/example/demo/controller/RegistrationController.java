@@ -45,11 +45,7 @@ public class RegistrationController {
     @RequestMapping(method = RequestMethod.GET, path = "/start", produces = "application/json")
     public @ResponseBody FormFieldsDTO get(){
 
-        System.out.println("USAO U START PROCESS REGISTRACIJA");
-
         ProcessInstance instance = runtimeService.startProcessInstanceByKey("registracija_korisnika");
-
-        System.out.println("ID je " + instance.getId());
 
         Task task = taskService.createTaskQuery().processInstanceId(instance.getId()).list().get(0);
 
@@ -61,17 +57,16 @@ public class RegistrationController {
 
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/getTasks/{processInstanceId}", produces = "application/json")
-    public @ResponseBody ResponseEntity<List<TaskDTO>> get(@PathVariable String processInstanceId){
-        System.out.println("USAO U GET TASKS " + processInstanceId);
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+    @RequestMapping(method = RequestMethod.GET, path = "/getTasks/{assignee}", produces = "application/json")
+    public @ResponseBody ResponseEntity<List<TaskDTO>> get(@PathVariable String assignee){
+        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
         List<TaskDTO> response = new ArrayList<TaskDTO>();
 
-        List<Task> admin_taskovi = taskService.createTaskQuery().taskAssignee("demo").list();
+//        List<Task> admin_taskovi = taskService.createTaskQuery().taskAssignee("demo").list();
 
-        for(Task task : admin_taskovi){
-            tasks.add(task);
-        }
+//        for(Task task : admin_taskovi){
+//            tasks.add(task);
+//        }
 
         for(Task task : tasks){
             TaskDTO temp = new TaskDTO(task.getId(), task.getName(), task.getAssignee());
@@ -84,13 +79,8 @@ public class RegistrationController {
 
     @RequestMapping(method = RequestMethod.GET, path = "/getFields/{taskId}", produces = "application/json")
     public @ResponseBody ResponseEntity<List<FormField>> getFields(@PathVariable String taskId){
-        System.out.println("USAO U GET FIELDS " + taskId);
         List<FormField> fields = formService.getTaskFormData(taskId).getFormFields();
 
-
-        for(FormField field : fields){
-            System.out.println(field.getId());
-        }
 
         return new ResponseEntity(fields, HttpStatus.OK);
 

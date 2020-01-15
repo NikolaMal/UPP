@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class LoginController {
     @Autowired
     public TokenUtils tokenUtils;
