@@ -2,16 +2,23 @@ package com.example.demo.controller;
 
 import com.example.demo.model.FormFieldsDTO;
 import com.example.demo.model.FormSubmissionDTO;
+import com.example.demo.model.Korisnik;
 import com.example.demo.model.TaskDTO;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.form.FormField;
+import org.camunda.bpm.engine.form.FormFieldValidationConstraint;
+import org.camunda.bpm.engine.form.FormType;
 import org.camunda.bpm.engine.form.TaskFormData;
 import org.camunda.bpm.engine.identity.User;
+import org.camunda.bpm.engine.impl.form.type.FormTypes;
+import org.camunda.bpm.engine.impl.form.type.StringFormType;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.variable.value.StringValue;
+import org.camunda.bpm.engine.variable.value.TypedValue;
 import org.camunda.bpm.webapp.impl.security.auth.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +31,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/register")
@@ -80,6 +88,87 @@ public class RegistrationController {
     @RequestMapping(method = RequestMethod.GET, path = "/getFields/{taskId}", produces = "application/json")
     public @ResponseBody ResponseEntity<List<FormField>> getFields(@PathVariable String taskId){
         List<FormField> fields = formService.getTaskFormData(taskId).getFormFields();
+        List<Korisnik> recenzenti = (ArrayList) runtimeService.getVariable(taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId(), "recenzenti");
+        List<Korisnik> urednici = (ArrayList) runtimeService.getVariable(taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId(), "urednici");
+        String svi = new String();
+        for(Korisnik rec : recenzenti){
+            svi = svi + rec.getUsername() + ", ";
+        }
+
+        for(Korisnik ur : urednici){
+            svi = svi + ur.getUsername() + ", ";
+        }
+
+        final String ok = svi;
+
+
+        if(taskService.createTaskQuery().taskId(taskId).singleResult().getAssignee().equals("demo") && taskService.createTaskQuery().taskId(taskId).singleResult().getName().equals("Provera podataka od strane admina")){
+            FormField field = new FormField() {
+                @Override
+                public String getId() {
+                    return "svi";
+                }
+
+                @Override
+                public String getLabel() {
+                    return "Svi: ";
+                }
+
+                @Override
+                public FormType getType() {
+                    return new StringFormType();
+                }
+
+                @Override
+                public String getTypeName() {
+                    return "string";
+                }
+
+                @Override
+                public Object getDefaultValue() {
+                    return ok;
+                }
+
+                @Override
+                public TypedValue getValue() {
+                    return null;
+                }
+
+                @Override
+                public List<FormFieldValidationConstraint> getValidationConstraints() {
+                    List<FormFieldValidationConstraint> list = new ArrayList<>();
+                    FormFieldValidationConstraint constraint = new FormFieldValidationConstraint() {
+                        @Override
+                        public String getName() {
+                            return "readonly";
+                        }
+
+                        @Override
+                        public Object getConfiguration() {
+                            return null;
+                        }
+                    };
+
+                    list.add(constraint);
+                    return list;
+                }
+
+                @Override
+                public Map<String, String> getProperties() {
+                    return null;
+                }
+
+                @Override
+                public boolean isBusinessKey() {
+                    return false;
+                }
+            };
+
+            fields.add(field);
+        }
+
+
+
 
 
         return new ResponseEntity(fields, HttpStatus.OK);

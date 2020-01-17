@@ -24,7 +24,7 @@ public class CasopisFinal implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution){
 
-        System.out.println("USAO U CASOPIS FINAL");
+        System.out.println("USAO U CASOPIS FINAL ID: " + execution.getProcessInstanceId());
 
         Long stari_issn = (Long) execution.getVariable("stari_issn");
 
@@ -37,7 +37,10 @@ public class CasopisFinal implements JavaDelegate {
 
         Long novi_issn = (Long) execution.getVariable("issn");
 
-        casopis.setAktivan(true);
+        if((Boolean) execution.getVariable("aktivan_casopis").equals(true)){
+            casopis.setAktivan(true);
+
+        }
         casopis.setIssn(novi_issn);
         casopis.setIme((String)execution.getVariable("ime"));
 
