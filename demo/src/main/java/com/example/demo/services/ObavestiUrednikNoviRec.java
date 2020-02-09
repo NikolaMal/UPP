@@ -10,14 +10,24 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 @Service
-public class SendEmailWithConfirmationLink implements JavaDelegate {
+public class ObavestiUrednikNoviRec implements JavaDelegate {
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception{
+    public void execute(DelegateExecution execution) throws Exception {
+
+        List<String> lista = (ArrayList) execution.getVariable("lista_recenzenata");
+        for(String s : lista){
+            System.out.println("ovo je iz liste: " + s);
+        }
+
+        System.out.println("Ovo je iz instance: " + (String) execution.getVariable("jedan_recenzent"));
+
         Properties props = new Properties();
         //String email = (String) execution.getVariable("email");
         String processInstanceId = execution.getProcessInstanceId();
@@ -35,13 +45,10 @@ public class SendEmailWithConfirmationLink implements JavaDelegate {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("nmalencic@gmail.com", false));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nmalencic@gmail.com"));
-        msg.setSubject("Link potvrde");
-        msg.setContent("http://localhost:8080/register/validateEmail/" + processInstanceId, "text/html");
+        msg.setSubject("Obavestenje za urednika (dodaj novog recenzenta ili podsetnik da pregledas)");
+        msg.setContent("Obavestenje", "text/html");
         msg.setSentDate(new Date());
 
         Transport.send(msg);
-
-        execution.setVariable("potvrdio", true);
     }
-
 }

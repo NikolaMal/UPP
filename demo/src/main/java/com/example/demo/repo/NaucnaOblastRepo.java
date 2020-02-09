@@ -9,4 +9,5 @@ public interface NaucnaOblastRepo extends JpaRepository<NaucnaOblast, String> {
     List<NaucnaOblast> findAll();
 
     NaucnaOblast findOneBySifra(int sifra);
+    NaucnaOblast findOneByIme(String ime);
 }

@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
+import com.example.demo.model.Korisnik;
+import com.example.demo.repo.KorisnikRepo;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.mail.Message;
@@ -14,10 +17,15 @@ import java.util.Date;
 import java.util.Properties;
 
 @Service
-public class SendEmailWithConfirmationLink implements JavaDelegate {
+public class ObavestiNovogRec implements JavaDelegate {
+
+    @Autowired
+    KorisnikRepo korisnikRepo;
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception{
+    public void execute(DelegateExecution execution) throws Exception {
+        Korisnik k = korisnikRepo.findOneByUsername((String) execution.getVariable("jedan_recenzent"));
+
         Properties props = new Properties();
         //String email = (String) execution.getVariable("email");
         String processInstanceId = execution.getProcessInstanceId();
@@ -35,13 +43,10 @@ public class SendEmailWithConfirmationLink implements JavaDelegate {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("nmalencic@gmail.com", false));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nmalencic@gmail.com"));
-        msg.setSubject("Link potvrde");
-        msg.setContent("http://localhost:8080/register/validateEmail/" + processInstanceId, "text/html");
+        msg.setSubject("Obavestenje za recenzenta zadatak recenziranje");
+        msg.setContent("Obavestenje", "text/html");
         msg.setSentDate(new Date());
 
         Transport.send(msg);
-
-        execution.setVariable("potvrdio", true);
     }
-
 }

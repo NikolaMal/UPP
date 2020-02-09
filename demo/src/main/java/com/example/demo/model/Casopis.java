@@ -134,4 +134,26 @@ public class Casopis {
     public void setAktivan(Boolean aktivan) {
         this.aktivan = aktivan;
     }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Korisnik> autori_platili;
+
+    public List<Korisnik> getAutori_platili() {
+        return autori_platili;
+    }
+
+    public void setAutori_platili(List<Korisnik> autori_platili) {
+        this.autori_platili = autori_platili;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Rad> radovi;
+
+    public List<Rad> getRadovi() {
+        return radovi;
+    }
+
+    public void setRadovi(List<Rad> radovi) {
+        this.radovi = radovi;
+    }
 }

@@ -107,6 +107,10 @@ public class LoadRecenzent implements TaskListener {
             }
         }
 
+        List<Korisnik> recenzenti = new ArrayList<>();
+
+        execution.setVariable("lista_recenzenata", recenzenti);
+
 
 
 

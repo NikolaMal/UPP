@@ -4,6 +4,7 @@ import com.example.demo.model.FormFieldsDTO;
 import com.example.demo.model.FormSubmissionDTO;
 import com.example.demo.model.Korisnik;
 import com.example.demo.model.TaskDTO;
+import com.example.demo.security.TokenUtils;
 import org.camunda.bpm.engine.FormService;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
@@ -27,6 +28,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +41,9 @@ public class RegistrationController {
 
     @Autowired
     private RuntimeService runtimeService;
+
+    @Autowired
+    TokenUtils tokenUtils;
 
     @Autowired
     TaskService taskService;
@@ -66,8 +71,8 @@ public class RegistrationController {
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/getTasks/{assignee}", produces = "application/json")
-    public @ResponseBody ResponseEntity<List<TaskDTO>> get(@PathVariable String assignee){
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
+    public @ResponseBody ResponseEntity<List<TaskDTO>> get(@PathVariable String assignee, HttpServletRequest request){
+
         List<TaskDTO> response = new ArrayList<TaskDTO>();
 
 //        List<Task> admin_taskovi = taskService.createTaskQuery().taskAssignee("demo").list();
@@ -75,6 +80,18 @@ public class RegistrationController {
 //        for(Task task : admin_taskovi){
 //            tasks.add(task);
 //        }
+
+        String assigne = getUsernameFromRequest(request);
+
+        if(assigne == null){
+            assigne = assignee;
+        }
+
+        System.out.println("Traze se zadaci za " + assigne);
+
+        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assigne).list();
+
+        System.out.println(tasks);
 
         for(Task task : tasks){
             TaskDTO temp = new TaskDTO(task.getId(), task.getName(), task.getAssignee());
@@ -91,13 +108,16 @@ public class RegistrationController {
         List<Korisnik> recenzenti = (ArrayList) runtimeService.getVariable(taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId(), "recenzenti");
         List<Korisnik> urednici = (ArrayList) runtimeService.getVariable(taskService.createTaskQuery().taskId(taskId).singleResult().getProcessInstanceId(), "urednici");
         String svi = new String();
-        for(Korisnik rec : recenzenti){
-            svi = svi + rec.getUsername() + ", ";
+        if(recenzenti != null && urednici != null){
+            for(Korisnik rec : recenzenti){
+                svi = svi + rec.getUsername() + ", ";
+            }
+
+            for(Korisnik ur : urednici){
+                svi = svi + ur.getUsername() + ", ";
+            }
         }
 
-        for(Korisnik ur : urednici){
-            svi = svi + ur.getUsername() + ", ";
-        }
 
         final String ok = svi;
 
@@ -224,6 +244,15 @@ public class RegistrationController {
         }
 
         return map;
+    }
+
+    private String getUsernameFromRequest(HttpServletRequest request) {
+        String authToken = tokenUtils.getToken(request);
+        if (authToken == null) {
+            return null;
+        }
+        String username = tokenUtils.getUsernameFromToken(authToken);
+        return username;
     }
 
 

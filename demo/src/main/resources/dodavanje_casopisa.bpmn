@@ -11,7 +11,7 @@
       <bpmn:outgoing>SequenceFlow_1770345</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_1770345" sourceRef="StartEvent_1" targetRef="Task_06jvedd" />
-    <bpmn:userTask id="Task_06jvedd" name="Unos podataka" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_06jvedd" name="Unos podataka" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="ime" label="Ime casopisa: " type="string">
@@ -36,17 +36,13 @@
       <bpmn:outgoing>SequenceFlow_144swl3</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_144swl3" sourceRef="Task_06jvedd" targetRef="Task_05sqacx" />
-    <bpmn:userTask id="Task_05sqacx" name="Unos pojedinacnih oblasti" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_05sqacx" name="Unos pojedinacnih oblasti" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="naziv_oblasti" label="Naucna oblast: " type="enum">
-            <camunda:value id="matematika" name="Matematika" />
-            <camunda:value id="fizika" name="Fizika" />
-            <camunda:value id="biologija" name="Biologija" />
-            <camunda:value id="medicina" name="Medicina" />
-          </camunda:formField>
+          <camunda:formField id="naucna_oblast" label="Naucna oblast: " type="enum" />
         </camunda:formData>
         <camunda:taskListener class="com.example.demo.handlers.DodajOblast" event="complete" />
+        <camunda:taskListener class="com.example.demo.handlers.LoadOblasti" event="create" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_144swl3</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0avp9cu</bpmn:outgoing>
@@ -60,7 +56,7 @@
       <bpmn:outgoing>SequenceFlow_1wmwsfd</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1wmwsfd" sourceRef="Task_19phzcs" targetRef="Task_0tsysxy" />
-    <bpmn:userTask id="Task_0tsysxy" name="Broj urednika i recenzenata" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_0tsysxy" name="Broj urednika i recenzenata" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="broj_urednika" label="Broj urednika koliko zelite da dodate?" type="long" />
@@ -129,7 +125,7 @@
       <bpmn:outgoing>SequenceFlow_1lp6gmr</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_0exndf8" sourceRef="Task_0tsysxy" targetRef="Task_0nwie88" />
-    <bpmn:userTask id="Task_0nwie88" name="Dodaj urednike" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_0nwie88" name="Dodaj urednike" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="urednik" type="enum" />
@@ -144,7 +140,7 @@
       </bpmn:multiInstanceLoopCharacteristics>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_0ixg3pj" sourceRef="Task_0nwie88" targetRef="Task_0wsv8gs" />
-    <bpmn:userTask id="Task_0wsv8gs" name="Dodaj recenzente" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_0wsv8gs" name="Dodaj recenzente" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="recenzent" type="enum" />
@@ -160,7 +156,7 @@
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_0qb4550" sourceRef="Task_0wsv8gs" targetRef="Task_1442lu6" />
     <bpmn:sequenceFlow id="SequenceFlow_1lp6gmr" sourceRef="Task_0a5g8kf" targetRef="Task_03xzvit" />
-    <bpmn:userTask id="Task_03xzvit" name="Ispravka" camunda:assignee="urednik">
+    <bpmn:userTask id="Task_03xzvit" name="Ispravka" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="ime" label="Ime casopisa: " type="string" />

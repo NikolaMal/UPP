@@ -14,10 +14,11 @@ import java.util.Date;
 import java.util.Properties;
 
 @Service
-public class SendEmailWithConfirmationLink implements JavaDelegate {
+public class ObavestiUrednikaDodatNoviPDF implements JavaDelegate {
 
     @Override
-    public void execute(DelegateExecution execution) throws Exception{
+    public void execute(DelegateExecution execution) throws Exception {
+
         Properties props = new Properties();
         //String email = (String) execution.getVariable("email");
         String processInstanceId = execution.getProcessInstanceId();
@@ -35,13 +36,11 @@ public class SendEmailWithConfirmationLink implements JavaDelegate {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("nmalencic@gmail.com", false));
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("nmalencic@gmail.com"));
-        msg.setSubject("Link potvrde");
-        msg.setContent("http://localhost:8080/register/validateEmail/" + processInstanceId, "text/html");
+        msg.setSubject("Obavestenje za urednika (dodat novi pdf ili izmena rada)");
+        msg.setContent("Dodat novi pdf", "text/html");
         msg.setSentDate(new Date());
 
         Transport.send(msg);
 
-        execution.setVariable("potvrdio", true);
     }
-
 }
