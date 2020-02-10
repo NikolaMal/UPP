@@ -90,7 +90,7 @@ public class FindUrednikAndNotify implements JavaDelegate {
         msg.setContent("Stigao novi rad za vasu naucnu oblast", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
 
         System.out.println("IZLAZIM IZ NOTIFY");
 

@@ -69,6 +69,8 @@ public class RegistrationProcessHandler implements ExecutionListener {
 
 //        identityService.createMembership(test_urednik.getId(), "urednici");
 
+        execution.setVariable("odobrena_recenzentura", false);
+
 
     }
 }

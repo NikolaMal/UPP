@@ -29,7 +29,6 @@
           <camunda:formField id="paypal" label="Podrzava placanje preko paypala?" type="boolean" />
           <camunda:formField id="issn" label="ISSN:" type="long" />
           <camunda:formField id="clanarina" label="Da li se placa clanarina:" type="boolean" />
-          <camunda:formField id="ime_urednika" label="Vas username:" type="string" />
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_1770345</bpmn:incoming>
@@ -75,7 +74,7 @@
               <camunda:constraint name="readonly" />
             </camunda:validation>
           </camunda:formField>
-          <camunda:formField id="ime_urednika_provera" label="Glavni urednik:" type="string" defaultValue="${ime_urednika}">
+          <camunda:formField id="ime_urednika_provera" label="Glavni urednik:" type="string" defaultValue="${starter}">
             <camunda:validation>
               <camunda:constraint name="readonly" />
             </camunda:validation>

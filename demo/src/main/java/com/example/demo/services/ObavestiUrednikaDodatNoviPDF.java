@@ -40,7 +40,7 @@ public class ObavestiUrednikaDodatNoviPDF implements JavaDelegate {
         msg.setContent("Dodat novi pdf", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
 
     }
 }

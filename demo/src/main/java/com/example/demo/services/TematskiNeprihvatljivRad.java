@@ -39,6 +39,6 @@ public class TematskiNeprihvatljivRad implements JavaDelegate {
         msg.setContent("Tema vam ne valja", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
     }
 }

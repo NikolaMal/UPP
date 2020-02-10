@@ -53,7 +53,7 @@ public class SendMailAuthorAndEditor implements JavaDelegate {
         msg.setContent("Prilozili ste novi rad", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
 
         Message msg2 = new MimeMessage(session);
         msg2.setFrom(new InternetAddress("nmalencic@gmail.com", false));
@@ -62,7 +62,7 @@ public class SendMailAuthorAndEditor implements JavaDelegate {
         msg2.setContent("Stigao je novi rad za pregled", "text/html");
         msg2.setSentDate(new Date());
 
-        Transport.send(msg2);
+//        Transport.send(msg2);
 
         Casopis c = casopisRepo.findOneByIme((String) execution.getVariable("casopis"));
 

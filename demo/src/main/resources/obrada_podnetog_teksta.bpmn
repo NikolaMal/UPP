@@ -193,7 +193,6 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0u1bm03" sourceRef="Task_1wrm55g" targetRef="EndEvent_07gjdp1" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_1mzr9b7">
-      <bpmn:incoming>SequenceFlow_00zqip5</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_117d0cs</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_0nagw2l</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0f42gy1</bpmn:outgoing>
@@ -301,7 +300,6 @@
       <bpmn:outgoing>SequenceFlow_1mr0ml4</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1mr0ml4" sourceRef="Task_0jqctw4" targetRef="Task_0588vsz" />
-    <bpmn:sequenceFlow id="SequenceFlow_00zqip5" sourceRef="Task_00nugom" targetRef="ExclusiveGateway_1mzr9b7" />
     <bpmn:exclusiveGateway id="ExclusiveGateway_0mqmtnl">
       <bpmn:incoming>SequenceFlow_1f8bavw</bpmn:incoming>
       <bpmn:incoming>SequenceFlow_1lnozef</bpmn:incoming>
@@ -336,7 +334,6 @@
         </camunda:formData>
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0nagw2l</bpmn:incoming>
-      <bpmn:outgoing>SequenceFlow_00zqip5</bpmn:outgoing>
       <bpmn:outgoing>SequenceFlow_0wc8p15</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="SequenceFlow_17ajnf8" sourceRef="biranje_task" targetRef="Task_1z0nxag" />
@@ -457,7 +454,7 @@
       <bpmn:outgoing>SequenceFlow_1v5c6it</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="SequenceFlow_1v5c6it" sourceRef="Task_0qmr3dx" targetRef="Task_16eow4a" />
-    <bpmn:userTask id="Task_16eow4a" name="Urednik pregleda rad">
+    <bpmn:userTask id="Task_16eow4a" name="Urednik pregleda rad" camunda:assignee="${urednik}">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="FormField_00lfd5a" label="Izmene: " type="string" defaultValue="${izmene}">
@@ -469,6 +466,7 @@
             <camunda:value id="prihvatiti" name="Prihvatiti" />
             <camunda:value id="prihvatiti_m" name="Prihvatiti sa manjim izmenama" />
             <camunda:value id="odbiti" name="Odbiti" />
+            <camunda:value id="prihvatiti_v" name="Prihvatiti sa vecim izmenama" />
           </camunda:formField>
         </camunda:formData>
       </bpmn:extensionElements>
@@ -492,7 +490,7 @@
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odluka == 'prihvatiti'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0wfltur" sourceRef="ExclusiveGateway_1rkztsh" targetRef="Task_0vjis5p">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odluka == 'prihvatiti_m'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odluka == 'prihvatiti_m' || odluka == 'prihvatiti_v'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0phzc18" sourceRef="ExclusiveGateway_1rkztsh" targetRef="Task_049croj">
       <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${odluka == 'odbiti'}</bpmn:conditionExpression>
@@ -511,9 +509,27 @@
     <bpmn:userTask id="Task_1owa88n" name="Autor dodaje koautore" camunda:assignee="${starter}">
       <bpmn:extensionElements>
         <camunda:formData>
-          <camunda:formField id="koautor" type="enum" />
+          <camunda:formField id="koautor_ime" label="Ime koautora: " type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="koautor_email" label="Email od koautora: " type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="koautor_grad" label="Grad koautora: " type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
+          <camunda:formField id="koautor_drzava" label="Drzava koautora: " type="string">
+            <camunda:validation>
+              <camunda:constraint name="required" />
+            </camunda:validation>
+          </camunda:formField>
         </camunda:formData>
-        <camunda:taskListener class="com.example.demo.handlers.LoadKoautor" event="create" />
         <camunda:taskListener class="com.example.demo.handlers.SacuvajKoautor" event="complete" />
       </bpmn:extensionElements>
       <bpmn:incoming>SequenceFlow_0y2v5oi</bpmn:incoming>
@@ -761,12 +777,6 @@
         <di:waypoint x="2480" y="1090" />
         <di:waypoint x="2480" y="1170" />
         <di:waypoint x="2560" y="1170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="SequenceFlow_00zqip5_di" bpmnElement="SequenceFlow_00zqip5">
-        <di:waypoint x="2450" y="930" />
-        <di:waypoint x="2338" y="930" />
-        <di:waypoint x="2338" y="940" />
-        <di:waypoint x="2225" y="940" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="ExclusiveGateway_0mqmtnl_di" bpmnElement="ExclusiveGateway_0mqmtnl" isMarkerVisible="true">
         <dc:Bounds x="3255" y="785" width="50" height="50" />

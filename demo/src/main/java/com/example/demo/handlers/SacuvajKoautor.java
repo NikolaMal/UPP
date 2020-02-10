@@ -23,7 +23,16 @@ public class SacuvajKoautor implements TaskListener {
 
         List<Korisnik> koautori = (ArrayList) execution.getVariable("koautori");
 
-        koautori.add(korisnikRepo.findOneByUsername((String) execution.getVariable("koautor")));
+        Korisnik k = new Korisnik();
+        k.setIme((String) execution.getVariable("koautor_ime"));
+        k.setEmail((String) execution.getVariable("koautor_email"));
+        k.setGrad((String) execution.getVariable("koautor_grad"));
+        k.setDrzava((String) execution.getVariable("koautor_drzava"));
+        k.setUsername(k.getIme());
+
+        koautori.add(k);
+
+        korisnikRepo.save(k);
 
         execution.setVariable("koautori", koautori);
     }

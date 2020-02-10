@@ -51,7 +51,7 @@ public class ObavestiRecenzente implements JavaDelegate {
             msg.setContent("Stigao novi zadatak recenziranja za " + k.getUsername(), "text/html");
             msg.setSentDate(new Date());
 
-            Transport.send(msg);
+//            Transport.send(msg);
         }
 
         List<String> lista = (ArrayList) execution.getVariable("lista_recenzenata");

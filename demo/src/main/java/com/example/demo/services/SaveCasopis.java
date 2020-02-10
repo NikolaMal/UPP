@@ -6,6 +6,7 @@ import com.example.demo.model.NacinPlacanja;
 import com.example.demo.model.NaucnaOblast;
 import com.example.demo.repo.CasopisRepo;
 import com.example.demo.repo.KorisnikRepo;
+import com.example.demo.repo.NacinPlacanjaRepo;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class SaveCasopis implements JavaDelegate {
     @Autowired
     CasopisRepo casopisRepo;
 
+    @Autowired
+    NacinPlacanjaRepo nacinPlacanjaRepo;
+
     @Override
     public void execute(DelegateExecution execution){
 
@@ -31,7 +35,7 @@ public class SaveCasopis implements JavaDelegate {
         Boolean paypal = (Boolean) execution.getVariable("paypal");
         Boolean btc = (Boolean) execution.getVariable("btc");
 
-        String urednik = (String) execution.getVariable("ime_urednika");
+        String urednik = (String) execution.getVariable("starter");
 
         ArrayList<NacinPlacanja> naciniPlacanja = new ArrayList<>();
 
@@ -45,23 +49,17 @@ public class SaveCasopis implements JavaDelegate {
 
 
         if(bank){
-            NacinPlacanja np = new NacinPlacanja();
-            np.setIme("bank");
-            np.setSifra(new Long(1));
+            NacinPlacanja np = nacinPlacanjaRepo.findOneByIme("BANK");
             naciniPlacanja.add(np);
         }
 
         if(paypal){
-            NacinPlacanja np = new NacinPlacanja();
-            np.setIme("paypal");
-            np.setSifra(new Long(2));
+            NacinPlacanja np = nacinPlacanjaRepo.findOneByIme("PAYPAL");
             naciniPlacanja.add(np);
         }
 
         if(btc){
-            NacinPlacanja np = new NacinPlacanja();
-            np.setIme("btc");
-            np.setSifra(new Long(3));
+            NacinPlacanja np = nacinPlacanjaRepo.findOneByIme("BITCOIN");
             naciniPlacanja.add(np);
         }
 

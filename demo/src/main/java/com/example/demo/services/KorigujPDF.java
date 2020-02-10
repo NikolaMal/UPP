@@ -39,6 +39,6 @@ public class KorigujPDF implements JavaDelegate {
         msg.setContent("Korigujte pdf", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
     }
 }

@@ -54,24 +54,24 @@ public class AutorObavestenje implements JavaDelegate {
                 msg.setContent("Rad Vam je prihvacen!", "text/html");
                 Rad r = radRepo.findOneByNaslov((String) execution.getVariable("naslov_rada"));
                 r.setPrihvacen(true);
-                Transport.send(msg);
+//                Transport.send(msg);
                 break;
 
             case "prihvatiti_m":
                 msg.setSubject("Morate izmeniti rad (manje izmene)");
                 msg.setContent("Text", "text/html");
-                Transport.send(msg);
+//                Transport.send(msg);
                 break;
 
             case "prihvatiti_v":
                 msg.setSubject("Morate izmeniti rad (vece izmene)");
                 msg.setContent("text", "text/html");
-                Transport.send(msg);
+//                Transport.send(msg);
                 break;
             case "odbiti":
                 msg.setSubject("Rad Vam je odbijen");
                 msg.setContent("text", "text/html");
-                Transport.send(msg);
+//                Transport.send(msg);
                 break;
         }
     }

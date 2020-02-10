@@ -37,6 +37,10 @@ public class LoadKomentari implements TaskListener {
                 for(String s : komentari){
                     enumFormType.getValues().put(s, s);
                 }
+
+                for(String s : komentari_autor){
+                    enumFormType.getValues().put(s, s);
+                }
             }
         }
 

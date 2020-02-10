@@ -47,6 +47,6 @@ public class ObavestiNovogRec implements JavaDelegate {
         msg.setContent("Obavestenje", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
     }
 }

@@ -39,6 +39,6 @@ public class RadOdbijenTehnicki implements JavaDelegate {
         msg.setContent("Isteklo vreme/nadmasen broj dozvoljenih pokusaja", "text/html");
         msg.setSentDate(new Date());
 
-        Transport.send(msg);
+//        Transport.send(msg);
     }
 }
